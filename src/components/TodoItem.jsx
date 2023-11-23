@@ -14,7 +14,13 @@ const TodoItem = ({ todo }) => {
 
   return (
     <>
-      <li className="flex justify-between items-center  border-2  rounded-lg p-2.5 px-3">
+      <li
+        className={`flex justify-between items-center border-2 rounded-lg p-2 px-3 border-l-4 ${
+          todo.completed
+            ? "border-l-green-600 bg-green-200"
+            : "border-l-orange-600"
+        }`}
+      >
         <div className="flex items-center w-full">
           <input
             type="checkbox"
@@ -33,7 +39,7 @@ const TodoItem = ({ todo }) => {
         </div>
         <button
           type="button"
-          className="p-1.5 px-2.5 rounded-lg bg-red-500 text-white hover:bg-red-600 cursor-pointer"
+          className="ml-2 p-1.5 px-2.5 rounded-lg bg-red-500 text-white hover:bg-red-600 cursor-pointer"
           onClick={handleRemove}
         >
           Delete

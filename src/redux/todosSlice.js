@@ -1,5 +1,3 @@
-// src/redux/todosSlice.js
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Define the asynchronous thunk
