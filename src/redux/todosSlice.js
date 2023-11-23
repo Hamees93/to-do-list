@@ -13,6 +13,8 @@ const initialState = {
   todos: [],
   loading: false,
   error: null,
+  filter: "all",
+  search: "", // Add search state variable
 };
 
 const todosSlice = createSlice({
@@ -31,6 +33,19 @@ const todosSlice = createSlice({
       );
       state.todos.splice(todoIndex, 1);
     },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
+    setSearch: (state, action) => {
+      state.search = action.payload;
+    },
+    addTodo: (state, action) => {
+      state.todos.push({
+        id: Math.random().toString(36).substr(2, 9),
+        title: action.payload.title,
+        completed: false,
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -47,5 +62,6 @@ const todosSlice = createSlice({
       });
   },
 });
-export const { toggleTodo, removeTodo } = todosSlice.actions;
+export const { toggleTodo, removeTodo, setFilter, setSearch, addTodo } =
+  todosSlice.actions;
 export default todosSlice.reducer;

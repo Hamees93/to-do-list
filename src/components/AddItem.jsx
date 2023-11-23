@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../redux/todosSlice";
 
-const AddItem = ({ addTodo }) => {
+const AddItem = () => {
   const [input, setInput] = useState("");
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -11,7 +14,7 @@ const AddItem = ({ addTodo }) => {
 
     // Check if the input is not empty before adding
     if (input.trim()) {
-      addTodo(input);
+      dispatch(addTodo({ title: input.trim() }));
       setInput("");
     }
   };
