@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from "@reduxjs/toolkit";
 
 // Define the asynchronous thunk
 export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
@@ -63,3 +67,30 @@ const todosSlice = createSlice({
 export const { toggleTodo, removeTodo, setFilter, setSearch, addTodo } =
   todosSlice.actions;
 export default todosSlice.reducer;
+
+// Create selectors using createSelector
+export const selectTodos = (state) => state.todos.todos;
+export const selectSearch = (state) => state.todos.search;
+export const selectFilter = (state) => state.todos.filter;
+
+export const filteredTodosSelector = createSelector(
+  [selectTodos, selectSearch, selectFilter],
+  (todos, search, filter) => {
+    const filteredTodos = todos.filter((todo) => {
+      if (search === "") {
+        return true;
+      } else {
+        return todo.title.toLowerCase().includes(search.toLowerCase());
+      }
+    });
+
+    if (filter === "all") {
+      return filteredTodos;
+    } else if (filter === "active") {
+      return filteredTodos.filter((todo) => !todo.completed);
+    } else if (filter === "completed") {
+      return filteredTodos.filter((todo) => todo.completed);
+    }
+    return filteredTodos;
+  }
+);

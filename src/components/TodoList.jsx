@@ -1,33 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import TodoItem from "./TodoItem";
 import { useEffect } from "react";
-import { fetchTodos } from "../redux/todosSlice";
+import { fetchTodos, filteredTodosSelector } from "../redux/todosSlice";
 import Filter from "./Filter";
 
 const TodoList = () => {
   const dispatch = useDispatch();
 
-  const todos = useSelector((state) => {
-    const filteredTodos = state.todos.todos.filter((todo) => {
-      if (state.todos.search === "") {
-        return true;
-      } else {
-        return todo.title
-          .toLowerCase()
-          .includes(state.todos.search.toLowerCase());
-      }
-    });
-
-    if (state.todos.filter === "all") {
-      return filteredTodos;
-    } else if (state.todos.filter === "active") {
-      return filteredTodos.filter((todo) => !todo.completed);
-    } else if (state.todos.filter === "completed") {
-      return filteredTodos.filter((todo) => todo.completed);
-    }
-    return filteredTodos;
-  });
-
+  const todos = useSelector(filteredTodosSelector);
   const loading = useSelector((state) => state.todos.loading);
   const error = useSelector((state) => state.todos.error);
 
