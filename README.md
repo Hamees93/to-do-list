@@ -1,12 +1,26 @@
-# Getting Started with Create React App
+## Prerequisites:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Node.js: Ensure you have Node.js installed on your system. You can download and install it from the official website: https://nodejs.org/en/download
 
-## Available Scripts
+## Installation:
 
-In the project directory, you can run:
+1. Clone the Repository: Clone the Git repository containing the React todo app to your local machine. You can use the following command in your terminal:
+   `git clone https://github.com/Hamees93/to-do-list.git`
 
-### `npm start`
+2. Navigate to Project Directory: Navigate to the directory containing the cloned React todo app using the following command:
+   `cd <project-directory>`
+
+Replace <project-directory> with the name of the directory where you cloned the repository.
+
+3. In the project directory, Install Dependencies: Install the project's dependencies using the following command:
+   `npm install`
+
+This will install all the necessary dependencies for the React todo app.
+
+4. Running the Project:
+
+Start the Development Server: Start the development server using the following command:
+`npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -14,57 +28,38 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+## Brief explanation of Redux Toolkit's role in your project.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# State Management:
 
-### `npm run build`
+The todosSlice slice encapsulates the state related to todos, including the list of todos, loading status, error, filter, search, and sort criteria. This modular approach keeps the state management logic organized and separated from other parts of the application.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Action Creation:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The fetchTodos action is an asynchronous action that fetches todos data from an external API. It utilizes the createAsyncThunk function provided by Redux Toolkit to handle the asynchronous nature of the operation.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Reducer Definition:
 
-### `npm run eject`
+The todosSlice slice defines reducer functions that handle different actions, such as toggling a todo's completion status, removing a todo, setting the filter, search, or sort criteria, and adding a new todo. The createSlice function simplifies reducer definition by automatically generating action creators and action types.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Selector Creation:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The selectTodos, selectSearch, selectFilter, and selectSort selectors efficiently retrieve specific portions of the state. The createSelector function ensures that selectors are memoized, preventing unnecessary recomputations.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# Extra Reducers:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The extraReducers section handles the asynchronous action responses for fetchTodos. It updates the state with the fetched todos data, sets the loading status to false, and saves the updated todos to local storage.
 
-## Learn More
+# Default Behaviors:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Redux Toolkit provides default behaviors for actions, reducers, and selectors, ensuring consistent and predictable behavior throughout the application. For instance, it automatically generates action types and handles the initial state for slices.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Error Handling:
 
-### Code Splitting
+The fetchTodos action utilizes the rejected action case to handle potential errors during the API call. It sets the error state and updates the loading status accordingly.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+# Boilerplate Reduction:
 
-### Analyzing the Bundle Size
+Redux Toolkit eliminates the need for repetitive boilerplate code, such as manually defining action types and action creators. This simplifies the development process and reduces the risk of errors.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+In summary, Redux Toolkit plays a significant role in this project by providing a structured and efficient approach to state management, action creation, reducer definition, selector creation, error handling, and boilerplate reduction. Its features contribute to a more maintainable and performant codebase.

@@ -37,7 +37,7 @@ const initialState = {
   error: null,
   filter: "all",
   search: "",
-  sort: "No Sorting",
+  sort: "Default",
 };
 
 const todosSlice = createSlice({
@@ -143,7 +143,7 @@ export const filteredTodosSelector = createSelector(
     }
 
     // Sort
-    if (sort === "No Sorting") {
+    if (sort === "Default") {
       // do nothing, already in the desired order
     } else if (sort === "Low Priority") {
       filteredTodos = filteredTodos.sort((a, b) => a.priority - b.priority);

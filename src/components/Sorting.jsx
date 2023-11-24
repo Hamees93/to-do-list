@@ -34,7 +34,7 @@ const Sorting = () => {
   return (
     <>
       <div className="flex mb-3">
-        <span>Sort Results By: </span>
+        <span>Sort By: </span>
         <div className="relative mx-2" ref={dropdownRef}>
           <button
             type="button"
@@ -49,9 +49,9 @@ const Sorting = () => {
               <li className="bg-gray-200 p-1 px-3 text-sm text-gray-800 hover:bg-gray-100">
                 <button
                   className="whitespace-nowrap"
-                  onClick={() => handleSorting("No Sorting")}
+                  onClick={() => handleSorting("Default")}
                 >
-                  No Sorting
+                  Default
                 </button>
               </li>
               <li className="bg-gray-200 p-1 px-3 text-sm text-gray-800 hover:bg-gray-100">
