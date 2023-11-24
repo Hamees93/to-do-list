@@ -27,8 +27,15 @@ const saveTodosToLocalStorage = (todos) => {
 // Define the asynchronous thunk
 export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
   const response = await fetch("https://jsonplaceholder.typicode.com/todos");
-  const data = await response.json();
-  return data;
+  const todos = await response.json();
+
+  const updatedTodos = todos.map((todo) => {
+    const updatedTodo = { ...todo }; // Create a copy of the todo object
+    updatedTodo.priority = updatedTodo.priority || 1; // Set default priority to low if not defined
+    return updatedTodo;
+  });
+
+  return updatedTodos;
 });
 
 const initialState = {
@@ -69,6 +76,7 @@ const todosSlice = createSlice({
         id: Math.random().toString(36).substr(2, 9),
         title: action.payload.title,
         completed: false,
+        priority: 1,
       });
       saveTodosToLocalStorage(state.todos); // Save todos to local storage
     },

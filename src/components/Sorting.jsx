@@ -39,7 +39,7 @@ const Sorting = () => {
           <button
             type="button"
             onClick={toggleDropdown}
-            className={`text-sm font-medium text-white bg-gray-700 px-3 p-1 rounded-lg`}
+            className={`text-sm font-medium text-white bg-gray-700 hover:bg-gray-800 px-3 p-1 rounded-lg`}
           >
             {sortedBy}
           </button>

@@ -74,10 +74,10 @@ const TodoItem = ({ todo }) => {
             onClick={toggleDropdown}
             className={`text-xs font-medium`}
           >
-            {todo.priority
-              ? priorityStatus.find((priority) => priority.id === todo.priority)
-                  .status
-              : "Low"}
+            {
+              priorityStatus.find((priority) => priority.id === todo.priority)
+                .status
+            }
           </button>
           {priorityDropdownOpen && (
             <ul className="absolute z-10 rounded shadow overflow-hidden mt-1 divide-y">
