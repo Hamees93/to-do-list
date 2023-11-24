@@ -3,6 +3,7 @@ import TodoItem from "./TodoItem";
 import { useEffect } from "react";
 import { fetchTodos, filteredTodosSelector } from "../redux/todosSlice";
 import Filter from "./Filter";
+import Sorting from "./Sorting";
 
 const TodoList = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const TodoList = () => {
   return (
     <>
       <Filter />
+      <Sorting />
       <ul className="space-y-2">
         {todos.map((todo) => (
           <TodoItem key={todo.id} todo={todo} />

@@ -80,9 +80,12 @@ const TodoItem = ({ todo }) => {
               : "Low"}
           </button>
           {priorityDropdownOpen && (
-            <ul className="absolute z-10 rounded-lg shadow overflow-hidden mt-1 divide-y">
+            <ul className="absolute z-10 rounded shadow overflow-hidden mt-1 divide-y">
               {priorityStatus.map((priority) => (
-                <li className="bg-gray-100 p-1 px-3 text-sm text-gray-800 hover:bg-gray-200">
+                <li
+                  key={priority.id}
+                  className="bg-gray-200 p-1 px-3 text-sm text-gray-800 hover:bg-gray-100"
+                >
                   <button onClick={() => handleChangePriority(priority)}>
                     {priority.status}
                   </button>

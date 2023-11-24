@@ -36,7 +36,8 @@ const initialState = {
   loading: false,
   error: null,
   filter: "all",
-  search: "", // Add search state variable
+  search: "",
+  sort: "No Sorting",
 };
 
 const todosSlice = createSlice({
@@ -78,6 +79,9 @@ const todosSlice = createSlice({
       state.todos[todoIndex].priority = action.payload.priority;
       saveTodosToLocalStorage(state.todos); // Save todos to local storage
     },
+    setSort: (state, action) => {
+      state.sort = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -102,6 +106,7 @@ export const {
   setSearch,
   addTodo,
   setPriority,
+  setSort,
 } = todosSlice.actions;
 export default todosSlice.reducer;
 
@@ -109,11 +114,15 @@ export default todosSlice.reducer;
 export const selectTodos = (state) => state.todos.todos;
 export const selectSearch = (state) => state.todos.search;
 export const selectFilter = (state) => state.todos.filter;
+export const selectSort = (state) => state.todos.sort;
 
 export const filteredTodosSelector = createSelector(
-  [selectTodos, selectSearch, selectFilter],
-  (todos, search, filter) => {
-    const filteredTodos = todos.filter((todo) => {
+  [selectTodos, selectSearch, selectFilter, selectSort],
+  (todos, search, filter, sort) => {
+    let filteredTodos = todos;
+
+    // Filter by search
+    filteredTodos = filteredTodos.filter((todo) => {
       if (search === "") {
         return true;
       } else {
@@ -121,13 +130,30 @@ export const filteredTodosSelector = createSelector(
       }
     });
 
+    // Filter by status (all, active, completed)
     if (filter === "all") {
-      return filteredTodos;
+      // do nothing, all todos are included
     } else if (filter === "active") {
-      return filteredTodos.filter((todo) => !todo.completed);
+      filteredTodos = filteredTodos.filter((todo) => !todo.completed);
     } else if (filter === "completed") {
-      return filteredTodos.filter((todo) => todo.completed);
+      filteredTodos = filteredTodos.filter((todo) => todo.completed);
+    } else {
+      // Handle invalid filter option
+      console.error("Invalid filter option:", filter);
     }
+
+    // Sort
+    if (sort === "No Sorting") {
+      // do nothing, already in the desired order
+    } else if (sort === "Low Priority") {
+      filteredTodos = filteredTodos.sort((a, b) => a.priority - b.priority);
+    } else if (sort === "High Priority") {
+      filteredTodos = filteredTodos.sort((a, b) => b.priority - a.priority);
+    } else {
+      // Handle invalid sort option
+      console.error("Invalid sort option:", sort);
+    }
+
     return filteredTodos;
   }
 );
