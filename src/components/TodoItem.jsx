@@ -1,8 +1,30 @@
 import { useDispatch } from "react-redux";
-import { toggleTodo, removeTodo } from "../redux/todosSlice";
+import { toggleTodo, removeTodo, setPriority } from "../redux/todosSlice";
+import { useEffect, useRef, useState } from "react";
 
 const TodoItem = ({ todo }) => {
   const dispatch = useDispatch();
+  const [priorityDropdownOpen, setPriorityDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setPriorityDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const priorityStatus = [
+    { id: 1, status: "Low", color: "green" },
+    { id: 2, status: "Medium", color: "yellow" },
+    { id: 3, status: "High", color: "red" },
+  ];
 
   const handleToggle = () => {
     dispatch(toggleTodo(todo.id));
@@ -10,6 +32,15 @@ const TodoItem = ({ todo }) => {
 
   const handleRemove = () => {
     dispatch(removeTodo(todo.id));
+  };
+
+  const toggleDropdown = () => {
+    setPriorityDropdownOpen((prevState) => !prevState);
+  };
+
+  const handleChangePriority = (priority) => {
+    dispatch(setPriority({ id: todo.id, priority: priority.id }));
+    toggleDropdown();
   };
 
   return (
@@ -37,12 +68,35 @@ const TodoItem = ({ todo }) => {
             {todo.title}
           </label>
         </div>
+        <div className="relative mx-2" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={toggleDropdown}
+            className={`text-xs font-medium`}
+          >
+            {todo.priority
+              ? priorityStatus.find((priority) => priority.id === todo.priority)
+                  .status
+              : "Low"}
+          </button>
+          {priorityDropdownOpen && (
+            <ul className="absolute z-10 rounded-lg shadow overflow-hidden mt-1 divide-y">
+              {priorityStatus.map((priority) => (
+                <li className="bg-gray-100 p-1 px-3 text-sm text-gray-800 hover:bg-gray-200">
+                  <button onClick={() => handleChangePriority(priority)}>
+                    {priority.status}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <button
           type="button"
-          className="ml-2 p-1.5 px-2.5 rounded-lg bg-red-500 text-white hover:bg-red-600 cursor-pointer"
+          className="ml-2 p-1.5 px-2.5 text-sm rounded-lg bg-red-500 text-white hover:bg-red-600 cursor-pointer"
           onClick={handleRemove}
         >
-          Delete
+          Remove
         </button>
       </li>
     </>

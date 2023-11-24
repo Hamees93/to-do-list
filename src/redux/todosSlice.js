@@ -4,6 +4,26 @@ import {
   createSelector,
 } from "@reduxjs/toolkit";
 
+// Function to get todos from local storage
+const getTodosFromLocalStorage = () => {
+  try {
+    const todos = localStorage.getItem("todos");
+    return todos ? JSON.parse(todos) : [];
+  } catch (error) {
+    console.error("Error loading todos from local storage:", error);
+    return [];
+  }
+};
+
+// Function to save todos to local storage
+const saveTodosToLocalStorage = (todos) => {
+  try {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  } catch (error) {
+    console.error("Error saving todos to local storage:", error);
+  }
+};
+
 // Define the asynchronous thunk
 export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
   const response = await fetch("https://jsonplaceholder.typicode.com/todos");
@@ -12,7 +32,7 @@ export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
 });
 
 const initialState = {
-  todos: [],
+  todos: getTodosFromLocalStorage(),
   loading: false,
   error: null,
   filter: "all",
@@ -28,12 +48,14 @@ const todosSlice = createSlice({
         (todo) => todo.id === action.payload
       );
       state.todos[todoIndex].completed = !state.todos[todoIndex].completed;
+      saveTodosToLocalStorage(state.todos); // Save todos to local storage
     },
     removeTodo: (state, action) => {
       const todoIndex = state.todos.findIndex(
         (todo) => todo.id === action.payload
       );
       state.todos.splice(todoIndex, 1);
+      saveTodosToLocalStorage(state.todos); // Save todos to local storage
     },
     setFilter: (state, action) => {
       state.filter = action.payload;
@@ -47,6 +69,14 @@ const todosSlice = createSlice({
         title: action.payload.title,
         completed: false,
       });
+      saveTodosToLocalStorage(state.todos); // Save todos to local storage
+    },
+    setPriority: (state, action) => {
+      const todoIndex = state.todos.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      state.todos[todoIndex].priority = action.payload.priority;
+      saveTodosToLocalStorage(state.todos); // Save todos to local storage
     },
   },
   extraReducers: (builder) => {
@@ -57,6 +87,7 @@ const todosSlice = createSlice({
       .addCase(fetchTodos.fulfilled, (state, action) => {
         state.todos = action.payload;
         state.loading = false;
+        saveTodosToLocalStorage(state.todos); // Save todos to local storage
       })
       .addCase(fetchTodos.rejected, (state, action) => {
         state.error = action.error;
@@ -64,8 +95,14 @@ const todosSlice = createSlice({
       });
   },
 });
-export const { toggleTodo, removeTodo, setFilter, setSearch, addTodo } =
-  todosSlice.actions;
+export const {
+  toggleTodo,
+  removeTodo,
+  setFilter,
+  setSearch,
+  addTodo,
+  setPriority,
+} = todosSlice.actions;
 export default todosSlice.reducer;
 
 // Create selectors using createSelector

@@ -12,7 +12,10 @@ const TodoList = () => {
   const error = useSelector((state) => state.todos.error);
 
   useEffect(() => {
-    dispatch(fetchTodos());
+    // check if we get any data from local storage
+    if (todos.length === 0) {
+      dispatch(fetchTodos());
+    }
   }, [dispatch]);
 
   if (loading) {
