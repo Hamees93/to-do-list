@@ -63,3 +63,11 @@ The fetchTodos action utilizes the rejected action case to handle potential erro
 Redux Toolkit eliminates the need for repetitive boilerplate code, such as manually defining action types and action creators. This simplifies the development process and reduces the risk of errors.
 
 In summary, Redux Toolkit plays a significant role in this project by providing a structured and efficient approach to state management, action creation, reducer definition, selector creation, error handling, and boilerplate reduction. Its features contribute to a more maintainable and performant codebase.
+
+## for the droppable todo list
+
+I faced an issue when use react beautiful dnd with react strict mode.
+and got a solution from the following article,
+`https://medium.com/@wbern/getting-react-18s-strict-mode-to-work-with-react-beautiful-dnd-47bc909348e4`
+
+from this article i have created a custom component called `StrictModeDroppable` instead of default `Droppable` component which comes from the library.

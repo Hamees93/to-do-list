@@ -1,9 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import TodoItem from "./TodoItem";
 import { useEffect } from "react";
-import { fetchTodos, filteredTodosSelector } from "../redux/todosSlice";
+import {
+  fetchTodos,
+  filteredTodosSelector,
+  setTodos,
+} from "../redux/todosSlice";
 import Filter from "./Filter";
 import Sorting from "./Sorting";
+import { DragDropContext } from "react-beautiful-dnd";
+import { StrictModeDroppable } from "./StrictModeDroppable";
 
 const TodoList = () => {
   const dispatch = useDispatch();
@@ -19,6 +25,24 @@ const TodoList = () => {
     }
   }, [dispatch]);
 
+  const handleDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const draggedItemIndex = result.source.index;
+    const droppedItemIndex = result.destination.index;
+
+    const draggedTodo = todos[draggedItemIndex];
+    const droppedTodo = todos[droppedItemIndex];
+
+    const updatedTodos = [...todos];
+    updatedTodos[draggedItemIndex] = droppedTodo;
+    updatedTodos[droppedItemIndex] = draggedTodo;
+
+    dispatch(setTodos(updatedTodos));
+  };
+
   if (loading) {
     return <div className="text-center">Loading...</div>;
   }
@@ -31,11 +55,23 @@ const TodoList = () => {
     <>
       <Filter />
       <Sorting />
-      <ul className="space-y-2">
-        {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
-        ))}
-      </ul>
+
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <StrictModeDroppable droppableId="list">
+          {(provided) => (
+            <ul
+              className="space-y-2"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {todos.map((todo, index) => (
+                <TodoItem todo={todo} index={index} key={todo.id} />
+              ))}
+              {provided.placeholder}
+            </ul>
+          )}
+        </StrictModeDroppable>
+      </DragDropContext>
     </>
   );
 };

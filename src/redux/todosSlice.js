@@ -90,6 +90,9 @@ const todosSlice = createSlice({
     setSort: (state, action) => {
       state.sort = action.payload;
     },
+    setTodos: (state, action) => {
+      state.todos = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -115,6 +118,7 @@ export const {
   addTodo,
   setPriority,
   setSort,
+  setTodos,
 } = todosSlice.actions;
 export default todosSlice.reducer;
 
