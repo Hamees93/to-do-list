@@ -72,7 +72,7 @@ const todosSlice = createSlice({
       state.search = action.payload;
     },
     addTodo: (state, action) => {
-      state.todos.push({
+      state.todos.unshift({
         id: Math.random().toString(36).substr(2, 9),
         title: action.payload.title,
         completed: false,
